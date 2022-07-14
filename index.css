@@ -1,0 +1,131 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #9623e0;
+}
+
+#app {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.button {
+    border: none;
+    border-radius: 4px;
+    color: white;
+    text-transform: uppercase;
+    padding: 7px 20px;
+    background-color: #949494;
+}
+
+.contained {
+    background-color: #2a3675;
+}
+
+.button:disabled {
+    background-color: #c4c4c4;
+}
+
+.button.active {
+    background-color: #2a3675;
+}
+
+.operation {
+    min-width: 20px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.card {
+    margin: 0;
+    max-width: 300px;
+    width: 100%;
+    margin-right: 1em;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    box-shadow: 5px 1px 10px rgba(0, 0, 0, 0.647);
+}
+
+.card header {
+    position: relative;
+    background-color: #2F3676;
+}
+
+
+.container {
+    padding: 1em;
+}
+
+.card header .container {
+    z-index: 1;
+}
+
+.card header h1 {
+    color: white;
+    font-size: 1rem;
+    font-weight: 100;
+}
+
+.card .content section {
+    margin-bottom: 1em;
+}
+
+.card .content section h5 {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+.input {
+    background-color: #dae2e8;
+    border-color: #8f96b6;
+    border-radius: 4px;
+    border-width: 1px;
+    padding: 1em;
+    font-size: 10px;
+    font-family: monospace;
+}
+
+.input.full {
+    width: 100%;
+}
+
+.card-detail {
+    margin-bottom: 1em;
+}
+
+.card-detail .input {
+    margin-bottom: 1em;
+}
+
+.card-detail .input:nth-child(3) {
+    width: 30%;
+}
+
+.card-detail .input:nth-child(4) {
+    width: 30%;
+}
+
+.observation {
+    width: 100%;
+}
+
+.quantity {
+    width: 30px;
+    padding: 4px 0;
+    font-size: 14px;
+}
+
+.checkbox label {
+    font-size: 12px;
+}
+
+.card footer {
+    display: flex;
+    justify-content: end;
+    background-color: #dae2e8;
+}

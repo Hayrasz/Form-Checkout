@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout BemPaggo</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <card title="Formulário para compra de Pacote de adesivos">
+            <div>
+                <section>
+                    <h5>Quais adesivos:</h5>
+                    <input type="checkbox" id="react" value="react" v-model="adesivos">
+                    <label for="react">React - R$ 5,00</label><br>
+                    <input type="checkbox" id="vue" value="vue" v-model="adesivos">
+                    <label for="vue">Vue - R$ 10,00</label><br>
+                    <input type="checkbox" id="angular" value="angular" v-model="adesivos">
+                    <label for="angular">Angular - R$ 7,00</label>
+                </section>
+                <section>
+                    <h5>Quantos adesivos de cada?</h5>
+                    <button class="button contained operation" @click="subtrair">-</button>
+                    <input class="input quantity" v-model="quantidade">
+                    <button class="button contained operation" @click="somar">+</button>
+                </section>
+                <section>
+                    <h5>Observações:</h5>
+                    <textarea class="input observation" placeholder="Alguma dúvida? Recado?" rows="5"
+                        v-model="mensagem"></textarea>
+                </section>
+            </div>
+
+            <template #footer>
+                <footer>
+                    <div class="container">
+                        <button class="button contained" @click="continuar"
+                            :disabled="adesivos.length === 0 || quantidade === 0">continuar</button>
+                    </div>
+                </footer>
+            </template>
+        </card>
+        <card title="Pagamento">
+            <div>
+                <section>
+                    <h5>Métodos de Pagamento</h5>
+                    <button :class="{button: true, active: method === 'PIX'}"
+                        @click="selecionarMetodo('PIX')">PIX</button>
+                    <button :class="{button: true, active: method === 'CARTAO'} "
+                        @click="selecionarMetodo('CARTAO')">CARTÃO</button>
+                    <button :class="{button: true, active: method === 'BOLETO'}"
+                        @click="selecionarMetodo('BOLETO')">BOLETO</button>
+                </section>
+                <section>
+                    <h5>Total:</h5>
+                    <p>{{total}}</p>
+                </section>
+                <section v-if="method == 'PIX'">
+                    <h5>Pagar com QR Code</h5>
+                    <img src="./qr-code.png" style="width: 100px;" />
+                    <p>
+                        <small>Ou Copie e Cole</small>
+                    </p>
+
+                    <input class="input" type="text">
+                    <button class="button contained" @click="copiarQRCode">Copiar</button>
+                </section>
+                <section v-if="method == 'CARTAO'">
+                    <h5>Dados do Cartão</h5>
+                    <div class="card-detail">
+                        <input class="input full" type="text" placeholder="Nome do titular" v-model="nome">
+                        <input class="input full" type="text" placeholder="Número do cartão" v-model="numeroDoCartao">
+                        <input class="input" type="text" placeholder="Validade" v-model="validade">
+                        <input class="input" type="text" placeholder="CVV" v-model="cvv">
+                        <input class="input full" type="text" placeholder="CPF do titular" v-model="cpf">
+                    </div>
+                    <button class="button contained"
+                        :disabled="!nome || !numeroDoCartao || !validade || !cvv || !cpf">Realizar
+                        Pagamento</button>
+                </section>
+                <section v-if="method == 'BOLETO'">
+                    <h5>Informe seu e-mail para receber o boleto em PDF</h5>
+                    <input class="input" type="text" v-model="email">
+                    <button class="button contained" @click="enviarPDF" :disabled="!email">Enviar</button>
+                </section>
+            </div>
+        </card>
+    </div>
+    <script>
+        Vue.component("card", {
+            props: ["title"],
+            template: `<div class="card">
+            <header>
+                <div class="container">
+                    <h1>{{ title }}</h1>
+                </div>
+            </header>
+            <main class="content">
+                <div class="container">
+                    <slot />
+                </div>
+            </main>
+            <slot name="footer" />
+        </div>`
+        })
+
+
+        new Vue({
+            el: "#app",
+            data: {
+                quantidade: 0,
+                adesivos: [],
+                mensagem: '',
+                total: "",
+                method: "",
+                nome: "",
+                numeroDoCartao: "",
+                validade: "",
+                cvv: "",
+                cpf: "",
+                email: ""
+            },
+            methods: {
+                subtrair() {
+                    this.quantidade--
+                },
+                somar() {
+                    this.quantidade++
+                },
+                selecionarMetodo(method) {
+                    this.method = method
+                },
+                continuar() {
+                    const total = calcular(this.adesivos, this.quantidade)
+                    this.total = formatarValor(total)
+                },
+                async copiarQRCode() {
+                    try {
+                        await window.navigator.clipboard.writeText("Olá mundo")
+                        alert("QRCode copiado com sucesso!")
+                    } catch (e) {
+                        alert("Ocorreu um problema ao copia o QRCode")
+                    }
+                },
+                enviarPDF() {
+                    alert("Enviamos o PDF para o e-mail " + this.email)
+                }
+            },
+        })
+    </script>
+
+</body>
+
+</html>
